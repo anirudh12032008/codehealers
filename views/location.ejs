@@ -1,0 +1,62 @@
+<!-- HTML form and button -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Button</title>
+</head>
+<body>
+    <button onclick="handleButtonClick()">Click Me</button>
+
+    <script>
+        // Function to get user's location on button click
+        function handleButtonClick() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+
+                    // Post user's location to the server
+                    postUserLocationToServer(latitude, longitude);
+
+                    // Plot on a dummy map
+                    plotOnDummyMap(latitude, longitude);
+                }, error => {
+                    console.error('Error getting user location:', error);
+                });
+            } else {
+                console.error('Geolocation not supported by the browser');
+            }
+        }
+
+        // Function to post user's location to the server
+        function postUserLocationToServer(latitude, longitude) {
+            // Post data to your server's API endpoint
+            fetch('/api/post-location', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    latitude,
+                    longitude,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Server response:', data);
+            })
+            .catch(error => {
+                console.error('Error posting location to server:', error);
+            });
+        }
+
+        // Function to plot on a dummy map
+        function plotOnDummyMap(latitude, longitude) {
+            // Code to plot on a dummy map goes here
+            // You can use your preferred map API
+        }
+    </script>
+</body>
+</html>
