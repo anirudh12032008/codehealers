@@ -1,69 +1,143 @@
-<!-- views/multiStepForm.ejs -->
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> </head>
-
-  <title>Register</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
+
+<title>Register</title>
+</head>
+
 <body>
 
-<form id="form1">
-  <h2>Form 1</h2>
-  <input type="text" name="username" placeholder="Username" value="NA" required>
-  <input type="text" name="password" placeholder="password" value="NA" required>
-  <input type="text" name="fullname" placeholder="fullname" value="NA" required>
-  <input type="number" name="mobile" placeholder="mobile" value="123" required>
-  <input type="email" name="email" placeholder="Email" value="NA@na.com" required>
-  <button type="button" id="continue">Continue</button>
-</form>
+  <%- include("components/header.ejs") %>
+    <div class="w-full bg-[#CBE4DE]">
+      <div class="grid grid-cols-2 py-20 px-28">
+        <div class="justify-center bg-white rounded-l-xl p-12 shadow-[-10px_15px_25px_5px_rgba(0,0,0,0.25)]">
+          <form id="form1">
+            <!-- Account Information -->
+            <h2 class="text-3xl text-[#0D9276] mb-10 ">Account Information</h2>
+            <!-- User Name -->
+            <div class="flex h-12 mt-3 mb-6 border-gray-400 border-b-[1px] items-center px-3 py-2">
+              <input class="enabled:bg-none enabled:border-none enabled:outline-none ml-2" type="text" id="username"
+                name="username" placeholder="User Name" required>
+            </div>
+            <!-- Full Name -->
+            <div class="flex h-12 mt-3 mb-6 border-gray-400 border-b-[1px] items-center px-3 py-2">
+              <input class="enabled:bg-none enabled:border-none enabled:outline-none ml-2" type="text" id="fullname"
+                name="fullname" placeholder="Full Name" required>
+            </div>
+            <!-- Number -->
+            <div class="">
+              <div class="flex w-full h-12 mb-3 border-gray-300 border-b-[1px] items-center px-3 py-2">
+                <input
+                  class="enabled:bg-none enabled:border-none enabled:outline-none ml-2"
+                  type="number" id="mobile" name="mobile" placeholder="Phone Number" required>
+              </div>
+            </div>
+            <!-- Password -->
+            <div class="flex h-12 mt-3 mb-6 border-gray-400 border-b-[1px] items-center px-3 py-2">
+              <input class="enabled:bg-none enabled:border-none enabled:outline-none ml-2" type="password" id="password"
+                name="password" placeholder="Password" required>
+            </div>
+            <!-- Confirm Password -->
+            <div class="flex h-12 mt-3 mb-6 border-gray-400 border-b-[1px] items-center px-3 py-2">
+              <input class="enabled:bg-none enabled:border-none enabled:outline-none ml-2" type="password"
+                id="passwordc" name="passwordc" placeholder="Confirm Password" required>
+            </div>
 
-<form id="form2" style="display: none;">
-  <h2>Form 2</h2>
-  <input type="number" name="age" placeholder="age" value="23" required>
-  <label for="gender">Gender:</label>
-  <select id="gender" name="gender" required>
-    <option value="" disabled selected>Select your gender</option>
-    <option value="male">Male</option>
-    <option value="female">Female</option>
-    <option value="other">Other</option>
-  </select>  <input type="number" name="height" placeholder="height(cm)" value="155" required>
-  <input type="number" name="weight" placeholder="weight(KG)" value="50" required>
-  <input type="text" name="bg" placeholder="Blood Group" value="A+" required>
-  <input type="text" name="sp" placeholder="Special problem?" value="NA" required>
-  <button type="submit">Submit</button>
+          </form>
+        </div>
+        <!-- General Information -->
+        <div class="justify-center bg-[#0D9276] rounded-r-xl p-12 shadow-[10px_15px_25px_5px_rgba(0,0,0,0.25)]">
+          <form id="form2" class="flex flex-col justify-center text-white">
+            <h2 class="text-3xl text-white mb-10 ">General Information</h2>
+            
+            <!-- Gender -->
+            <div class="flex w-full h-12 my-3 placeholder:text-white border-gray-400 border-b-[1px] items-center px-3 py-2 relative">
+              <select
+                class=" bg-[#0D9276]  placeholder:text-white enabled:bg-none enabled:border-none enabled:outline-none ml-2 cursor-pointer appearance-none text-white"
+                name="gender" id="gender">
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="transgender">Transgender</option>
+                <option value="none">Prefer not to say</option>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <!-- Age -->
+              <div class="flex w-full h-12 my-3 border-gray-400 border-b-[1px] items-center px-3 py-2">
+                <input class="bg-[#0D9276] enabled:bg-none enabled:border-none enabled:outline-none ml-2 placeholder:text-white" type="number" id="age"
+                  name="age" placeholder="Age" required>
+              </div>
+              <!-- Blood group -->
+              <div class="flex h-12 my-3 border-gray-400 border-b-[1px] items-center px-3 py-2">
+                <input class=" bg-[#0D9276]  enabled:border-none enabled:outline-none ml-2 placeholder:text-white" type="text" id="bg"
+                  name="bg" placeholder="Blood group">
+              </div>
+            </div>
 
-</form>
+            <div class="grid grid-cols-2 gap-4">
+              <!-- Height -->
+              <div class="flex w-full h-12 my-3 border-gray-400 border-b-[1px] items-center px-3 py-2">
+                <input class=" bg-[#0D9276] enabled:bg-none enabled:border-none enabled:outline-none ml-2 placeholder:text-white" type="number" id="height"
+                  name="height" placeholder="Height" required>
+              </div>
+              <!-- Weight -->
+              <div class="flex w-full h-12 my-3 border-gray-400 border-b-[1px] items-center px-3 py-2">
+                <input class="bg-[#0D9276] enabled:bg-none enabled:border-none enabled:outline-none ml-2 placeholder:text-white" type="number" id="weight"
+                  name="weight" placeholder="Weight" required>
+              </div>
+            </div>
 
-<script>
-$(document).ready(function() {
-      $('#continue').click(function() {
-        $('#form2').show();
-        $('#form1').hide();
-      });
+            <!-- Chronic Disease -->
+            <div class="flex w-full h-12 my-3 border-gray-400 border-b-[1px] items-center px-3 py-6">
+              <textarea class="w-full bg-[#0D9276] enabled:bg-none enabled:border-none enabled:outline-none ml-2 placeholder:text-white" type="text"
+                id="sp" name="sp" placeholder="Any Chronic disease(s), please specify"></textarea>
+            </div>
+            
+            <!-- Register button -->
+            <div
+              class="flex items-center justify-center w-1/4 mx-auto mt-10 border-2 border-white rounded-lg px-3 py-2 text-white cursor-pointer hover:bg-white hover:text-[#0D9276]">
+              <input type="submit" name="register" value="Register">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
-      $('#form2').submit(function(event) {
-        event.preventDefault();
-        const combinedData = $('#form1').serializeArray().concat($('#form2').serializeArray());
+    <%- include("components/footer.ejs") %>
 
-        $.ajax({
-          url: '/register', 
-          type: 'POST',
-          data: combinedData, 
-          success: function(response) {
-            console.log('User created:', response);
-            window.location.href = '/profile';
-          },
-          error: function(error) {
-            console.error('Error creating user:', error);
-          }
+      <script>
+        $(document).ready(function () {
+          // $('#continue').click(function() {
+          //   $('#form2').show();
+          //   $('#form1').hide();
+          // });
+
+          $('#form2').submit(function (event) {
+            event.preventDefault();
+            const combinedData = $('#form1').serializeArray().concat($('#form2').serializeArray());
+
+            $.ajax({
+              url: '/register',
+              type: 'POST',
+              data: combinedData,
+              success: function (response) {
+                console.log('User created:', response);
+                window.location.href = '/profile';
+              },
+              error: function (error) {
+                console.error('Error creating user:', error);
+              }
+            });
+          });
         });
-      });
-    });
-</script>
+      </script>
 
 </body>
+
 </html>
