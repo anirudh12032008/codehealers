@@ -1,0 +1,103 @@
+<%- include("components/header.ejs") %>
+<div class="w-full bg-[#CBE4DE]">
+    <div class="grid grid-cols-2 py-20 px-28">
+        <div class="justify-center bg-white rounded-l-xl p-12 shadow-[-10px_15px_25px_5px_rgba(0,0,0,0.25)]">
+            <!-- General Information -->
+                <h2 class="text-3xl text-[#0D9276] mb-10 ">General Information</h2>
+                <!-- First Name -->
+                <div class="flex h-12 mt-3 mb-6 border-gray-400 border-b-[1px] items-center px-3 py-2">
+                    <input class="enabled:bg-none enabled:border-none enabled:outline-none ml-2" type="text" id="fname" name="name" placeholder="First Name" required>
+                </div>
+                <!-- Last Name -->
+                <div class="flex h-12 my-3 border-gray-400 border-b-[1px] items-center px-3 py-2">
+                    <input class=" enabled:bg-none enabled:border-none enabled:outline-none ml-2" type="text" id="lname" name="name" placeholder="Last Name" required>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- Age -->
+                    <div class="flex w-full h-12 my-3 border-gray-400 border-b-[1px] items-center px-3 py-2">               
+                        <input class="enabled:bg-none enabled:border-none enabled:outline-none ml-2" type="number" id="age" name="age" placeholder="Age" required>
+                    </div>
+                    <!-- Gender -->
+                    <div class="flex w-full h-12 my-3 border-gray-400 border-b-[1px] items-center px-3 py-2 relative">
+                        <select class=" enabled:bg-none enabled:border-none enabled:outline-none ml-2 cursor-pointer appearance-none text-gray-500" name="gender" id="gender" aria-placeholder="Select Gender">
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="none">Prefer not to say</option>
+                        </select>
+                        <span class="absolute top-[35%] right-[11.5%] text-gray-500">
+                            <img src="chevron.png" class="w-5">
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- Height -->
+                    <div class="flex w-full h-12 my-3 border-gray-400 border-b-[1px] items-center px-3 py-2">
+                        <input class=" enabled:bg-none enabled:border-none enabled:outline-none ml-2" type="number" id="height" name="height" placeholder="Height" required>
+                    </div>
+                    <!-- Weight -->
+                    <div class="flex w-full h-12 my-3 border-gray-400 border-b-[1px] items-center px-3 py-2">
+                        <input class="enabled:bg-none enabled:border-none enabled:outline-none ml-2" type="number" id="weight" name="weight" placeholder="Weight" required>
+                    </div>
+                </div>  
+
+                <!-- Chronic Disease -->
+                <div class="flex w-full h-12 my-3 border-gray-400 border-b-[1px] items-center px-3 py-6">               
+                    <textarea class=" w-full enabled:bg-none enabled:border-none enabled:outline-none ml-2" type="text" id="cd" name="cd" placeholder="Any Chronic disease(s), please specify"></textarea>
+                </div>
+            </form>
+        </div>   
+        <!-- Contact Details -->
+        <div class="justify-center bg-[#0D9276] rounded-r-xl p-12 shadow-[10px_15px_25px_5px_rgba(0,0,0,0.25)]">
+            <form action="/register" method="get" class="flex flex-col justify-center text-white">
+                <h2 class="text-3xl text-white mb-10 ">Contact Details</h2>               
+                <!-- Number -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex w-full h-12 mb-3 border-gray-300 border-b-[1px] items-center px-3 py-2">
+                        <input class="bg-[#0D9276] enabled:bg-none enabled:border-none enabled:outline-none ml-2 placeholder:text-white" type="number" id="code" name="code" placeholder="Code (+)">
+                    </div>
+                    <div class="flex w-full h-12 mb-3 border-gray-300 border-b-[1px] items-center px-3 py-2">
+                        <input class="bg-[#0D9276] enabled:bg-none enabled:border-none enabled:outline-none ml-2 placeholder:text-white" type="number" id="number" name="number" placeholder="Phone Number" required>
+                    </div>
+                </div>
+                <!-- Address -->
+                <div class="flex h-12 my-3 border-gray-300 border-b-[1px] items-center px-3 py-2">
+                    <input class="bg-[#0D9276] enabled:bg-none enabled:border-none enabled:outline-none ml-2 placeholder:text-white" type="text" id="address1" name="address1" placeholder="Address line 1" required>
+                </div>
+                <div class="flex h-12 my-3 border-gray-300 border-b-[1px] items-center px-3 py-2">
+                    <input class="bg-[#0D9276] enabled:bg-none enabled:border-none enabled:outline-none ml-2 placeholder:text-white" type="text" id="address2" name="address2" placeholder="Address line 2">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- Zip code -->
+                    <div class="flex h-12 my-3 border-gray-300 border-b-[1px] items-center px-3 py-2">
+                        <input class="bg-[#0D9276] enabled:bg-none enabled:border-none enabled:outline-none ml-2 placeholder:text-white" type="number" id="zip" name="zip" placeholder="Zip code" required>
+                    </div>
+                    <!-- City -->
+                    <div class="flex h-12 my-3 border-gray-300 border-b-[1px] items-center px-3 py-2">
+                        <input class="bg-[#0D9276] enabled:bg-none enabled:border-none enabled:outline-none ml-2 placeholder:text-white" type="text" id="city" name="city" placeholder="City" required>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- State -->
+                    <div class="flex h-12 my-3 border-gray-300 border-b-[1px] items-center px-3 py-2">
+                        <input class="bg-[#0D9276] enabled:bg-none enabled:border-none enabled:outline-none ml-2 placeholder:text-white" type="text" id="state" name="state" placeholder="State">
+                    </div>
+                    <!-- Country -->
+                    <div class="flex h-12 my-3 border-gray-300 border-b-[1px] items-center px-3 py-2">
+                        <input class="bg-[#0D9276] enabled:bg-none enabled:border-none enabled:outline-none ml-2 placeholder:text-white" type="text" id="country" name="country" placeholder="Country" required>
+                    </div>
+                </div>
+                <!-- Register button -->
+                <div class="flex items-center justify-center w-1/4 mx-auto mt-10 border-2 border-white rounded-lg px-3 py-2 text-white cursor-pointer hover:bg-white hover:text-[#0D9276]">
+                    <input type="submit" name="register" value="Register">
+                  </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include("components/footer.ejs") %>
