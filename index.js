@@ -4,9 +4,16 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
-
 const app = express();
 const port = 3000;
+const OpenAI = require('openai');
+const openai = new OpenAI();
+const openaiApiKey = process.env.OPENAI_API_KEY;
+openai.apiKey = openaiApiKey;
+
+
+
+// Express Config
 app.set('view engine', 'ejs'); 
 app.set('views', __dirname + '/views');  
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -42,17 +49,36 @@ userSchema.pre('save', async function (next) {
   const User = mongoose.model('User', userSchema);
 
 
+// isLogin
+const isLogin = (req, res, next) => {
+  if (!req?.session?.user){
+    return res.redirect('/login');
+  }
+  next();
+};
+app.get('/', isLogin, async(req, res) => {
+  res.render('buddy', {user: req.session.user})
+})
+// register
 app.get('/register', async(req,res)=>{
     res.render('register.ejs')
 })
-
-
-
+// login
 app.get('/login', async(req,res)=>{
     res.render('login.ejs')
 })
+// profile
+app.get('/profile', isLogin, (req, res) => {
+  res.render('profile', { user: req.session.user });
+});
+// location
+app.get('/location', async(req, res) => {
+  res.render('location')
+})
 
 
+// POST Routes
+// register
 app.post('/register', async (req, res) => {
     console.log(req.body);
     try {
@@ -65,8 +91,7 @@ app.post('/register', async (req, res) => {
       res.status(500).json({ message: 'Error creating user' });
     }
   });
-
-
+// login
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
   
@@ -84,13 +109,12 @@ app.post('/login', async (req, res) => {
       }
   
       req.session.user = user;
-
-      res.status(200).json({ message: 'Login successful', username: user.username });
+      res.redirect('/profile');
     } catch (error) {
       res.status(500).json({ message: 'Internal server error' });
     }
 });
-  
+// logout
 app.post('/logout', (req, res) => {
     req.session.destroy(err => {
       if (err) {
@@ -99,10 +123,24 @@ app.post('/logout', (req, res) => {
       res.redirect('/login'); 
     });
   });
-app.get('/profile', (req, res) => {
-    res.render('profile', { user: req.session.user });
-  });
-
+// buddy
+app.post('/buddy', async (req, res) => {
+    const { prompt } = req.body;
+    const completion = await openai.chat.completions.create({
+      messages: [{ role: "system", content: prompt }],
+      model: "gpt-3.5-turbo",
+    });
+    console.log(completion);
+    console.log('response');
+    console.log(completion.choices[0]['message']['content']);
+    res.send(completion.choices[0]['message']['content'])
+});
+// location
+app.post('/api/post-location', async(req, res) => {
+  const {latitude, longitude } = req.body
+  console.log(latitude, longitude);
+})
+// server start
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
