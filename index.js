@@ -6,16 +6,17 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 const app = express();
 const port = 3000;
-const OpenAI = require('openai');
-const openai = new OpenAI();
-const openaiApiKey = process.env.OPENAI_API_KEY;
-openai.apiKey = openaiApiKey;
+// const OpenAI = require('openai');
+// const openai = new OpenAI();
+// const openaiApiKey = process.env.OPENAI_API_KEY;
+// openai.apiKey = openaiApiKey;
 
 
 
 // Express Config
 app.set('view engine', 'ejs'); 
-app.set('views', __dirname + '/views');  
+app.set('views', __dirname + '/views');
+app.use(express.static('public'));  
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 // Create .env file and in that write URL=xyz instead of xyz use the db url like the below one
@@ -56,6 +57,9 @@ const isLogin = (req, res, next) => {
   }
   next();
 };
+app.get("/", (req, res)=>{
+  res.render('index.ejs')
+})
 app.get('/', isLogin, async(req, res) => {
   res.render('buddy', {user: req.session.user})
 })
