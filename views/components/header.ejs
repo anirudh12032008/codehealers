@@ -3,11 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" 
-    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <title>Document</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Register</title>
 </head>
 <body>
-    <nav class="bg-[#265073] p-5 text-white">health buddy</nav>
+    <div class="px-3 h-[11.5vh] py-2 flex items-center justify-between w-full">
+        <div class="flex items-center">
+          <button class="rounded-full hover:bg-light p-3 flex items-center justify-center" type="button" name="button">
+            <img
+      src="/images/icon.png"
+      alt="pin logo"
+      class="h-8 w-8"
+    />
+          </button>
+          <a href="/" id=1  class=" py-3 px-4 font-semibold " type="button" name="button">
+            Home
+          </a>
+        </div>
+
+        <% if (log) { %>
+           <!-- login user only -->
+        <div class="flex items-center">
+          <a href="/profile" id=1  class=" py-3 px-4 font-semibold " type="button" name="button">
+            Profile
+          </a>
+        </div>
+      
+      <% } else { %>
+                <!-- Logout user -->
+        <div>
+          <a class="bg-[#0D9276] mx-2 px-3 text-white font-semibold py-3 rounded-3xl" href="/">Login</a>
+          <a class="bg-zinc-200 mx-2 px-3 text-zinc-950 font-semibold py-3 rounded-3xl" href="/register">Sign Up</a>
+        </div>
+    <% } %>
+  </div>

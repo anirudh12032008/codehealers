@@ -1,20 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include ("./components/header.ejs") %>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-</head>
-
-<title>Register</title>
-</head>
-
-<body>
-
-  <%- include("components/header.ejs") %>
     <div class="w-full bg-[#CBE4DE]">
-      <div class="grid grid-cols-2 py-20 px-28">
+      <div class="grid grid-cols-2 py-5 px-28">
         <div class="justify-center bg-white rounded-l-xl p-12 shadow-[-10px_15px_25px_5px_rgba(0,0,0,0.25)]">
           <form id="form1">
             <!-- Account Information -->
@@ -109,7 +96,6 @@
       </div>
     </div>
 
-    <%- include("components/footer.ejs") %>
 
       <script>
         $(document).ready(function () {
@@ -137,7 +123,4 @@
           });
         });
       </script>
-
-</body>
-
-</html>
+<%- include ("./components/footer.ejs") %>

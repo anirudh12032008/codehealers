@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const path = require('path')
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const app = express();
@@ -10,12 +11,18 @@ const OpenAI = require('openai');
 const openai = new OpenAI();
 const openaiApiKey = process.env.OPENAI_API_KEY;
 openai.apiKey = openaiApiKey;
-
+// gemini
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const genAI = new GoogleGenerativeAI(process.env.API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+const axios = require('axios');
 
 
 // Express Config
 app.set('view engine', 'ejs'); 
 app.set('views', __dirname + '/views');  
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 // Create .env file and in that write URL=xyz instead of xyz use the db url like the below one
@@ -57,19 +64,19 @@ const isLogin = (req, res, next) => {
   next();
 };
 app.get('/', isLogin, async(req, res) => {
-  res.render('buddy', {user: req.session.user})
+  res.render('buddy', {user: req.session.user, log: 1})
 })
 // register
 app.get('/register', async(req,res)=>{
-    res.render('register.ejs')
+    res.render('register.ejs', {log: 0})
 })
 // login
 app.get('/login', async(req,res)=>{
-    res.render('login.ejs')
+    res.render('login.ejs', {log: 0})
 })
 // profile
 app.get('/profile', isLogin, (req, res) => {
-  res.render('profile', { user: req.session.user });
+  res.render('profile', { user: req.session.user , log: 1});
 });
 // location
 app.get('/location', async(req, res) => {
@@ -125,21 +132,33 @@ app.post('/logout', (req, res) => {
   });
 // buddy
 app.post('/buddy', async (req, res) => {
-    const { prompt } = req.body;
+    const { prompt, lat, long } = req.body;
+    console.log(lat,long,'lat long');
+    const geoApiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${long}&format=json`;
+    const geoResponse = await axios.get(geoApiUrl);
+    const city = geoResponse.data.address.city;
+    console.log(`City: ${city}`);
+
+    const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+    const result = await model.generateContent( `Hi 
+    tell me 5 hospitals in ${city} with there full address and coordinates
+    the response should be in this format
+    name
+    full Address
+    distance of its latitude and longitude from this point lat: ${lat}, long: ${long} in KM
+    and so on for all 5
+    note that dont include other things like ratings be specific with the details also to dont add anything else just the hospital details no general text `);
+    const response = await result.response;
+    const text = response.text();
+    console.log(text);
     const completion = await openai.chat.completions.create({
       messages: [{ role: "system", content: prompt }],
       model: "gpt-3.5-turbo",
     });
-    console.log(completion);
-    console.log('response');
-    console.log(completion.choices[0]['message']['content']);
-    res.send(completion.choices[0]['message']['content'])
+    res.send({op: completion.choices[0]['message']['content'],
+    ge: text})
 });
-// location
-app.post('/api/post-location', async(req, res) => {
-  const {latitude, longitude } = req.body
-  console.log(latitude, longitude);
-})
+
 // server start
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
