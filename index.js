@@ -85,6 +85,9 @@ app.get('/profile', isLogin, (req, res) => {
 app.get('/location', async(req, res) => {
   res.render('location')
 })
+app.get('/report',isLogin, async(req, res) => {
+  res.render('report', {log: 1, user: req.session.user})
+})
 
 
 // POST Routes
@@ -161,6 +164,32 @@ app.post('/buddy', async (req, res) => {
     res.send({op: completion.choices[0]['message']['content'],
     ge: text})
 });
+
+app.post('/report', async(req, res) =>{
+  console.log('processing req');
+  const {
+    medi,
+    stress,
+    screen,
+    sugar,
+    fvcount,
+    pcount,
+    exercise,
+    fam,
+    other,
+    sleep,
+    sick,
+  } = req.body;
+  user = req.session.user
+  const prompt = `Here is a scenario. A person of height:${user.height} and weight:${user.weight},who takes number of servings of fruits and vegetables:${fvcount}, number of servings of processed foods:${pcount}, does exercise:${exercise} times per week for atleast 30 minutes, having chronical medical condition as ${fam} and other health conditions like ${other} , sleeps for ${sleep} hours,has been sick since last 20 days as ${sick}, consumes sugar beverages ${sugar} times a week, spends ${screen} hours on screen per day,has stress level of ${stress} on daily basis, engage in meditation ${medi}.Generate a personalized health report focused on improving well-being, maintaining overall health, and providing a general health score. Emphasize healthy habits and positive reinforcement while avoiding any mention of specific medical conditions or identifying information.`
+  const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+  const result = await model.generateContent(prompt);
+  const response = await result.response;
+  const text = response.text();
+  console.log(text);
+  res.send(text)
+})
+
 
 // server start
 app.listen(port, () => {
