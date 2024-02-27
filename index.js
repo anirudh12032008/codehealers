@@ -25,8 +25,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-// Create .env file and in that write URL=xyz instead of xyz use the db url like the below one
-// 'mongodb+srv://ayeshanaaz396:Ayesha%40396@cluster0.lne4swa.mongodb.net/healer?retryWrites=true&w=majority'
 mongoose.connect(process.env.URL, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Error connecting to MongoDB:', err));    

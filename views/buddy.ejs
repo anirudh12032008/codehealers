@@ -1,48 +1,116 @@
 <%- include ("./components/header.ejs") %>
 
-       <style>
+    <style>
         #responseDiv {
-            display: none;
+            /* display: none; */
+            display: block;
         }
+
         #responseDiv2 {
-            display: none;
+            /* display: none; */
+            display: block;
+        }
+        
+        .OutputDivs1{
+            background-color: #9195F6;
+            max-height: auto;
+            max-width: auto;
+            height: auto;
+            width: auto;
+            margin: 10px;
+            border-radius: 10px;
+        }
+
+        .OutputDivs2{
+            background-color: #9BCF53;
+            max-height: auto;
+            max-width: auto;
+            height: auto;
+            width: auto;
+            margin: 10px;
+            border-radius: 10px;
         }
     </style>
-    <form id="myForm">
-        <label for="prompt">Prompt:</label>
-        <input type="text" id="prompt" name="prompt" required>
+    <!-- <div id="hero" class="relative  flex-wrap flex items-center justify-center w-full h-screen bg-slate-400">
+        
+        <form class= "flex justify-evenly items-center font-sans text-xl p-4 absolute top-5 left-5 w-3/4 h-1/5 bg-white border-2 border-green-800" id="myForm">
+            <label class="relative text-3xl " for="prompt">Prompt:</label>
+            <input class="px-3 py-1 w-1/2 h-3/4 rounded-md border-2 border-gray-400  focus:border-5 focus:border-blue-500 " type="text" id="prompt" name="prompt" placeholder="Enter your problem you want to search" required>
+            <button class="p-2  h-3/4 w-1/5 rounded-md bg-green-600 text-white text-3xl"  type="button" onclick="handleButtonClick()">Click me</button>
+        </form>
+        
+        <div id="outputs" class="relative my-5 mx-10 bottom-10 flex justify-between items-center flex-wrap z-5 w-3/4 min-h-1/2 h-auto overflow-visible  bg-gray-500 ">
+            
+            <div id="responseDiv" class="p-2 rounded-md border-3 w-1/2 h-auto border-green-800 bg-blue-600">
+                
+            </div>
 
-        <button type="button" onclick="handleButtonClick()">Click me</button>
-    </form>
-    <div id="responseDiv"></div>
-    <div id="responseDiv2"></div>
+            <div id="responseDiv2" class="p-2 rounded-md border-3 w-1/3 h-auto border-green-800 bg-blue-600">
+
+            </div>
+
+        </div>
+        
+    </div> 
+-->
+
+    <div id="hero" class="relative flex flex-col items-center justify-center w-full min-h-screen bg-slate-400">
+
+        <form
+            class="flex flex-col sm:flex-row justify-center items-center font-sans text-xl p-4 absolute top-5 left-5 w-3/4 sm:w-auto sm:max-w-lg h-auto bg-white border-2 border-green-800"
+            id="myForm">
+            <label class="relative text-3xl" for="prompt">Prompt:</label>
+            <input
+                class="px-3 py-1 w-full sm:w-1/2 h-12 sm:h-3/4 rounded-md border-2 border-gray-400 focus:border-5 focus:border-blue-500"
+                type="text" id="prompt" name="prompt" placeholder="Enter your problem you want to search" required>
+            <button
+                class="p-2 h-12 sm:h-3/4 w-full sm:w-1/5 rounded-md bg-green-600 text-white text-3xl mt-4 sm:mt-0 sm:ml-4"
+                type="button" onclick="handleButtonClick()">Click me</button>
+        </form>
+
+        <div id="outputs"
+            class="relative my-5 mx-10 bottom-10 flex flex-col md:flex-row justify-evenly items-center w-full max-w-5xl min-h-1/2 h-auto overflow-visible bg-gray-500">
+            <div id="responseDiv"
+                class="p-2 rounded-md border-3 w-full md:w-1/2 h-auto border-green-800 bg-blue-600 mb-4 md:mb-0">
+                <!-- dynamic element thus added the css in style tag -->
+                <div class="OutputDivs1 "></div>
+            </div>
+
+            <div id="responseDiv2" class="p-2 rounded-md border-3 w-full md:w-1/2 h-auto border-green-800 bg-blue-600">
+                <div class="OutputDivs2"></div>
+            </div>
+
+        </div>
+
+    </div>
+
 
     <script>
-        
+
         async function handleButtonClick() {
             let latitude, longitude;
             const getPosition = () => {
-        return new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(
-                position => resolve(position),
-                error => reject(error)
-            );
-        });
-    };
+                return new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(
+                        position => resolve(position),
+                        error => reject(error)
+                    );
+                });
+            };
 
-    try {
-        if (navigator.geolocation) {
-            const position = await getPosition();
-            latitude = position.coords.latitude;
-            longitude = position.coords.longitude;
-            console.log(latitude, longitude);
-            // Continue with the rest of your code using latitude and longitude
-        } else {
-            console.error('Geolocation not supported by the browser');
-        }
-    } catch (error) {
-        console.error('Error getting user location:', error);
-    }
+            try {
+                if (navigator.geolocation) {
+                    const position = await getPosition();
+                    latitude = position.coords.latitude;
+                    longitude = position.coords.longitude;
+                    console.log(latitude, longitude);
+                    // Continue with the rest of your code using latitude and longitude
+                } else {
+                    console.error('Geolocation not supported by the browser');
+                }
+            } catch (error) {
+                console.error('Error getting user location:', error);
+            }
 
             const prompt = document.getElementById('prompt').value;
             const myString = `
@@ -81,7 +149,7 @@
             - Provide a severity rating on a scale of 1 to 10 for the presented symptoms. 
             `;
             var main_data = ''
- 
+
             document.getElementById('myForm').style.display = 'none';
             fetch('/buddy', {
                 method: 'POST',
@@ -97,9 +165,25 @@
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('responseDiv').innerText = data.op;
-                    document.getElementById('responseDiv2').innerText = data.ge;
+                    // document.getElementById('responseDiv2').innerText = data.ge;
                     main_data = data.op.split("::::")
+                    
                     console.log(main_data);
+                    
+
+                    /** testing here **/ 
+
+                    const outputContainer = document.getElementById("responseDiv2");
+
+                    main_data.forEach(data => {
+                        let div = document.createElement("div");
+                        div.classList.add("OutputDivs2");
+                        div.innerText = data;
+                        outputContainer.appendChild(div);
+                    });
+
+                    /** testing ends**/
+
                     document.getElementById('responseDiv').style.display = 'block';
                     document.getElementById('responseDiv2').style.display = 'block';
                 })
@@ -108,5 +192,4 @@
                 });
         }
     </script>
-<%- include ("./components/footer.ejs") %>
-
+    <%- include ("./components/footer.ejs") %>
