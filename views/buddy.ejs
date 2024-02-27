@@ -1,48 +1,93 @@
 <%- include ("./components/header.ejs") %>
 
-       <style>
+    <style>
         #responseDiv {
-            display: none;
+            /* display: none; */
+            display: block;
         }
+
         #responseDiv2 {
-            display: none;
+            /* display: none; */
+            display: block;
         }
+
+        .OutputDivs1{
+            background:  rgba(33, 33, 33, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            color: white;
+            max-height: auto;
+            max-width: auto;
+            height: auto;
+            width: auto;
+            margin: 10px;
+            border-radius: 10px;
+        }
+
     </style>
-    <form id="myForm">
-        <label for="prompt">Prompt:</label>
-        <input type="text" id="prompt" name="prompt" required>
 
-        <button type="button" onclick="handleButtonClick()">Click me</button>
-    </form>
-    <div id="responseDiv"></div>
-    <div id="responseDiv2"></div>
+    <div id="hero" class="relative flex flex-col items-center justify-center w-full min-h-screen bg-slate-400">
 
+        <form
+            class="flex flex-col sm:flex-row justify-center font-sans text-xl p-4 w-3/4  h-auto bg-white border-2 border-green-800"
+            id="myForm">
+            <label class="text-3xl mx-2" for="prompt">Prompt:</label>
+            <input
+                class="px-3 py-1 w-full h-12 sm:w-1/2  rounded-md border-2 border-gray-400 focus:border-5 focus:border-blue-500"
+                type="text" id="prompt" name="prompt" placeholder="Enter your problem you want to search" required>
+            <button
+                class="p-2 h-12 sm:h-1/4 w-full sm:w-1/4 rounded-md bg-green-600 text-white text-3xl mt-4 sm:mt-0 sm:ml-4"
+                type="button" onclick="handleButtonClick()">Click me</button>
+        </form>
+
+        <div id="outputs"
+            class="mx-10 bottom-10 flex flex-col md:flex-row justify-evenly items-center w-[95%] min-h-3/4 h-auto overflow-visible bg-slate-900">
+
+            <div id="responseDiv"
+                class="m-3 rounded-md w-full md:w-1/2 h-auto max-2xl bg-blue-500 flex justify-center items-center  bg-opacity-25 backdrop-filter backdrop-blur-lg border border-gray-300 shadow-lg p-4 max-w-lg">
+                <h2 class="mb-2 text-center font-sans  text-white/80 font-semibold text-2xl">Analysis of your
+                    Information</h2>
+                <!-- dynamic element thus added the css in style tag -->
+                <div class="OutputDivs1"></div>
+
+            </div>
+
+            <!-- This does not contain dynamic splitted data-->
+            <div id="responseDiv2"
+                class="m-3 w-full md:w-1/2 h-auto text-white/80 bg-green-500 bg-opacity-25 backdrop-filter backdrop-blur-lg border border-green-300 rounded-lg shadow-lg p-4 max-w-sm">
+                <h2 class="mb-2 text-center font-sans font-semibold text-2xl">Nearby Locations of hospitals </h2>
+                <div id="OutputDivs2"></div>
+            </div>
+
+        </div>
+
+    </div>
     <script>
-        
+
         async function handleButtonClick() {
             let latitude, longitude;
             const getPosition = () => {
-        return new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(
-                position => resolve(position),
-                error => reject(error)
-            );
-        });
-    };
+                return new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(
+                        position => resolve(position),
+                        error => reject(error)
+                    );
+                });
+            };
 
-    try {
-        if (navigator.geolocation) {
-            const position = await getPosition();
-            latitude = position.coords.latitude;
-            longitude = position.coords.longitude;
-            console.log(latitude, longitude);
-            // Continue with the rest of your code using latitude and longitude
-        } else {
-            console.error('Geolocation not supported by the browser');
-        }
-    } catch (error) {
-        console.error('Error getting user location:', error);
-    }
+            try {
+                if (navigator.geolocation) {
+                    const position = await getPosition();
+                    latitude = position.coords.latitude;
+                    longitude = position.coords.longitude;
+                    console.log(latitude, longitude);
+                    // Continue with the rest of your code using latitude and longitude
+                } else {
+                    console.error('Geolocation not supported by the browser');
+                }
+            } catch (error) {
+                console.error('Error getting user location:', error);
+            }
 
             const prompt = document.getElementById('prompt').value;
             const myString = `
@@ -81,7 +126,7 @@
             - Provide a severity rating on a scale of 1 to 10 for the presented symptoms. 
             `;
             var main_data = ''
- 
+
             document.getElementById('myForm').style.display = 'none';
             fetch('/buddy', {
                 method: 'POST',
@@ -96,10 +141,32 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('responseDiv').innerText = data.op;
-                    document.getElementById('responseDiv2').innerText = data.ge;
-                    main_data = data.op.split("::::")
-                    console.log(main_data);
+                    // document.getElementById('responseDiv').innerText = data.op;
+                    // document.getElementById('responseDiv2').innerText = data.ge;
+
+                    main_data1 = data.op.split("::::")
+                    main_data2 = data.ge;
+
+                    console.log("first data ->" + main_data1);
+                    console.log("location data -> " + main_data2);
+
+
+                    /** testing here **/
+                    const outputContainer1 = document.getElementById("responseDiv");
+
+
+                    main_data1.forEach(data => {
+                        const div1 = document.createElement("div");
+                        div1.classList.add("OutputDivs1");
+                        div1.innerText = data;
+                        outputContainer1.appendChild(div1);
+                    });
+
+                    const outputContainer2 = document.getElementById("OutputDivs2");
+                    outputContainer2.innerText = main_data2;
+
+                    /** testing ends**/
+
                     document.getElementById('responseDiv').style.display = 'block';
                     document.getElementById('responseDiv2').style.display = 'block';
                 })
@@ -108,5 +175,4 @@
                 });
         }
     </script>
-<%- include ("./components/footer.ejs") %>
-
+    <%- include ("./components/footer.ejs") %>
