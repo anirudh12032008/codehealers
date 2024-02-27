@@ -1,24 +1,84 @@
 <%- include ("./components/header.ejs") %>
-
-
-  <h1>User Profile</h1>
-
-  <% if (user) { %>
-    <p>Username: <%= user.username %></p>
-    <p>Full Name: <%= user.fullname %></p>
-    <p>Mobile: <%= user.mobile %></p>
-    <p>Age: <%= user.age %></p>
-    <p>Height: <%= user.height %></p>
-    <p>Weight: <%= user.weight %></p>
-    <p>Specialization: <%= user.sp %></p>
-    <p>Gender: <%= user.gender %></p>
-    <p>Blood Group: <%= user.bg %></p>
-    <p>User ID: <%= user._id %></p>
-
+<% if (user) { %>
+<div class="py-6 px-8">
+  <h1 class="text-3xl font-semibold">User Profile</h1>
+  <div class="border border-gray-300 my-4 p-4 flex flex-row shadow-md">
+    <div class="py-2 text-gray-500 w-60">
+      <ul id="menu">
+        <li class="menu-item border-b border-b-gray-100 mb-4 mr-4 w-full cursor-pointer hover:text-black hover:font-semibold" data-target="menu-1">General Info</li>
+        <li class="menu-item border-b border-b-gray-100 mb-4 mr-4 w-full cursor-pointer hover:text-black hover:font-semibold" data-target="menu-2">Account Info</li>
+        <li class="menu-item border-b border-b-gray-100 mb-4 mr-4 w-full cursor-pointer hover:text-black hover:font-semibold" data-target="menu-3">Change Password</li>
+      </ul>
+    </div>
+    <div class="p-2 mx-4 w-full">
+      <div class="menu-content menu-1">
+        <div class="p-2 pb-0 mb-2 text-lg border-b border-b-gray-200"><p class="text-gray-700">Full Name:<span class="text-gray-500  ml-4 text-base"><%= user.fullname %></span></p></div>
+        <div class="p-2 pb-0 mb-2 text-lg border-b border-b-gray-200"><p class="text-gray-700">Age: <span class="text-gray-500  ml-4 text-base"><%= user.age %> yrs</span></p></div>
+        <div class="p-2 pb-0 mb-2 text-lg border-b border-b-gray-200"><p class="text-gray-700">Gender: <span class="text-gray-500  ml-4 text-base"><%= user.gender %></span></p></div>
+        <div class="p-2 pb-0 mb-2 text-lg border-b border-b-gray-200"><p class="text-gray-700">Height: <span class="text-gray-500  ml-4 text-base"><%= user.height %> cm</span></p></div>
+        <div class="p-2 pb-0 mb-2 text-lg border-b border-b-gray-200"><p class="text-gray-700">Weight: <span class="text-gray-500  ml-4 text-base"><%= user.weight %> kgs</span></p></div>
+        <div class="p-2 pb-0 mb-2 text-lg border-b border-b-gray-200"><p class="text-gray-700">Blood Group: <span class="text-gray-500  ml-4 text-base"><%= user.bg %></span></p></div>
+        <div class="p-2 pb-0 mb-2 text-lg border-b border-b-gray-200"><p class="text-gray-700">Specialization: <span class="text-gray-500  ml-4 text-base"><%= user.sp %></span></p></div>  
+      </div>
+      <div class="menu-content menu-2 hidden">
+        <div class="p-2 pb-0 mb-2 text-lg border-b border-b-gray-200"><p class="text-gray-700">Username:<span class="text-gray-500  ml-4 text-base"><%= user.username %></span></p></div>
+        <div class="p-2 pb-0 mb-2 text-lg border-b border-b-gray-200"><p class="text-gray-700">Mobile No.:<span class="text-gray-500  ml-4 text-base"><%= user.mobile %></span></p></div>
+        <div class="p-2 pb-0 mb-2 text-lg border-b border-b-gray-200"><p class="text-gray-700">User ID:<span class="text-gray-500  ml-4 text-base"><%= user._id %></span></p></div>
+      </div>
+      <div class="menu-content menu-3 hidden">
+        <div class="flex h-12 mt-3 mb-6 border-gray-400 border-b-[1px] items-center px-3 py-2">
+          <input class="enabled:bg-none enabled:border-none enabled:outline-none ml-2"
+            type="text" id="cp" name="cp" placeholder="Current Password">
+        </div>
+        <div class="flex h-12 mt-3 mb-6 border-gray-400 border-b-[1px] items-center px-3 py-2">
+          <input class="enabled:bg-none enabled:border-none enabled:outline-none ml-2"
+            type="text" id="np" name="np" placeholder="New Password">
+        </div>
+        <div class="flex h-12 mt-3 mb-6 border-gray-400 border-b-[1px] items-center px-3 py-2">
+          <input class="enabled:bg-none enabled:border-none enabled:outline-none ml-2"
+            type="text" id="np" name="np" placeholder="Confirm New Password">
+        </div>
+        <div class="rounded-md py-1 px-3 bg-[#10bc97] hover:bg-[#0D9276] text-white w-16 text-center shadow-md right-10">
+          <button type="submit">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="flex items-center justify-end space-x-4 mx-8">
+    <button type="submit" class="rounded-md py-1 px-3 bg-blue-600 hover:bg-blue-700 text-white text-center shadow-sm">Edit Profile</button>
     <form action="/logout" method="post">
-      <button type="submit">Logout</button>
+      <button type="submit" class="rounded-md py-1 px-3 bg-red-600 hover:bg-red-700 text-white text-center shadow-sm">Logout</button>
     </form>
+  </div>
+    
   <% } else { %>
     <p>User not logged in. Please <a href="/login">login</a>.</p>
   <% } %>
+
+  <script>
+    const menuItems = document.querySelectorAll('.menu-item');
+    const menus = document.querySelectorAll('.menu-content');
+
+    function clearActiveClasses() {
+      menuItems.forEach(item => {
+        item.classList.remove('text-black', 'font-semibold'); 
+      });
+    }
+
+    function hideAllMenus() {
+      menus.forEach(menu => {
+        menu.classList.add('hidden');
+      });
+    }
+    menuItems.forEach(item => {
+      item.addEventListener('click', function() {
+        clearActiveClasses();
+        hideAllMenus();
+        this.classList.add('text-black', 'font-semibold');
+        const targetMenu = document.querySelector(`.${this.getAttribute('data-target')}`);
+        targetMenu.classList.remove('hidden');
+      });
+    });
+  </script>
 <%- include ("./components/footer.ejs") %>
