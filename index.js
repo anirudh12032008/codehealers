@@ -62,15 +62,6 @@ const isLogin = (req, res, next) => {
   next();
 };
 
-
-// app.get("/", (req, res)=>{
-//   res.render('index.ejs',{log: 0})
-// })
-// app.get('/', isLogin, async(req, res) => {
-//   res.render('buddy', {user: req.session.user, log: 1})
-// })
-
-
 // test
 app.get('/', async(req, res) => {
   res.render('index.ejs',{log: 0})
@@ -137,7 +128,7 @@ app.post('/login', async (req, res) => {
       }
   
       req.session.user = user;
-      res.redirect('/profile');
+      res.redirect('/buddy');
     } catch (error) {
       res.status(500).json({ message: 'Internal server error' });
     }
