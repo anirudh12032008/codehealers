@@ -31,16 +31,16 @@
                             <i class="ri-user-3-line mx-2"></i><a href="/profile" class="px-4 py-2 text-sm text-gray-700 hover:text-[#0d9276]" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
                         </div>
                         <div class="flex items-center my-1 hover:bg-gray-100 transition duration-150">
-                            <i class="ri-survey-line mx-2"></i></i><a href="/report" class="px-4 py-2 text-sm text-gray-700 hover:text-[#0d9276]" role="menuitem" tabindex="-1" id="user-menu-item-1">Check report</a>
-                        </div>
-                        <div class="flex items-center my-1 hover:bg-gray-100 transition duration-150">
-                            <i class="ri-logout-box-line mx-2"></i>
-                            <form action="/logout" method="POST" style="display: inline;">
-                            <button class="px-4 py-2 text-sm text-gray-700 hover:text-[#0d9276]" role="menuitem" tabindex="-1" id="user-menu-item-2">Logout</button>
-                            </form>
+                        <i class="ri-logout-box-line mx-2"></i><a href="/logout" class="px-4 py-2 text-sm text-gray-700 hover:text-[#0d9276]" role="menuitem" tabindex="-1" id="user-menu-item-2">Logout</a>
                         </div>
                     </div>
                 </div>
+                <script>
+                    function menuToggle() {
+                      const toggleMenu = document.querySelector(".menu");
+                      toggleMenu.classList.toggle("hidden");
+                    }
+                </script>
              
            
            <% } else { %>
@@ -62,10 +62,6 @@
         </div>
         <% } %>
         <script>
-            function menuToggle() {
-                const toggleMenu = document.querySelector(".menu");
-                toggleMenu.classList.toggle("hidden");
-            }
             document.addEventListener('DOMContentLoaded', function () {
                 const menuButton = document.querySelector('.menu-button');
                 const mobileMenu = document.querySelector('.dropdown-menu');

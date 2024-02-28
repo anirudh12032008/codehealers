@@ -1,16 +1,19 @@
-<%- include ("./components/header.ejs") %>
+
   <style>
-    /* body {
+    body {
+background-image: url('yoga1 (1).jpeg');
+background-size: cover;
+background-repeat: no-repeat;
       font-family: 'Quicksand', sans-serif;
       font-size: 20px;
-      background-color: #e8fdf8;
+      background-color: #f0f0f0;
       margin: 0;
       padding: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-    } */
+    }
   
     .quiz-card {
       display: none;
@@ -19,7 +22,7 @@
       background-color: #fff;
       border: 1px solid #ccc;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       margin-bottom: 20px;
       overflow: hidden;
       text-align: center;
@@ -27,30 +30,20 @@
 
     .quiz-card.active {
       display: block;
-      background-color: #fafafa;
+      background-color:rgb(247, 223, 127);
     }
 
     .quiz-card-header {
-      background-color: #0D9276;
+      background-color: black;
       color: #fff;
-      padding:20px 10px;
-      font-size: 1.5rem;
+      padding: 10px;
     }
 
     .quiz-card-content {
-      padding: 30px 20px;
-      font-family: 'Quicksand', sans-serif;  
-      color: #333;  
-    }
-
-    .input-box{
-      margin-top: 20px;
-      border-bottom: 1px solid #ccc;
-      background-color: #fafafa;
-    }
-
-    .input-box:focus{
-      outline: none;
+      padding: 20px;
+      font-family: 'Quicksand', sans-serif;
+    
+     
     }
 
     .button-container {
@@ -59,54 +52,41 @@
     }
 
     .submit-btn {
-      margin: 40px 10px 0;
-      background-color: #0D9276;
+       margin-top: 40px;
+      background-color: black;
       color: #fff;
       padding: 10px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      width: 25%;
+      width: 48%; /* Adjust the width as needed */
     }
-    .loader {
-      border: 6px solid #f3f3f3; /* Light grey */
-      border-top: 6px solid #3498db; /* Blue */
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      animation: spin 2s linear infinite;
-    }
+  </style>
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-</style>
-<div class="bg-[#e8fdf8] text-lg p-5 flex items-center justify-center min-h-screen">
+    
+  
   <div class="quiz-card active" id="card1">
     <div class="quiz-card-header">
       <h2>Question 1</h2>
     </div>
     <div class="quiz-card-content">
       <p>How many servings of fruits and vegetables do you eat each day?</p>
-      <input class="input-box" id="fvcount" type="number" name="q1" placeholder="Your answer...">
+      <input id="fvcount" type="number" name="q1" placeholder="Your answer...">
     </div>
-      <button class="submit-btn mt-7" onclick="nextCard('card2')">Next</button>
+      <button class="submit-btn mt-7" onclick="nextCard('card2')">Next</button></div>
+    
   </div>
-
   <div class="quiz-card" id="card2">
     <div class="quiz-card-header">
       <h2>Question 2</h2>
     </div>
     <div class="quiz-card-content">
       <p>How many servings of processed foods do you eat each day?</p>
-      <input class="input-box" id="pcount" type="number" name="q2" placeholder="Your answer...">
+      <input id="pcount" type="number" name="q2" placeholder="Your answer...">
     </div>
-    <div class="btn-container">
-      <button class="submit-btn" onclick="prevCard('card1')">Previous</button>
-      <button class="submit-btn mt-7" onclick="nextCard('card3')">Next</button>
-    </div>
+    <div class="btn-container"><button class="submit-btn" onclick="prevCard('card1')">Previous</button>
+      <button class="submit-btn mt-7" onclick="nextCard('card3')">Next</button></div>
+    
   </div>
   <div class="quiz-card" id="card3">
     <div class="quiz-card-header">
@@ -114,40 +94,36 @@
     </div>
     <div class="quiz-card-content">
       <p>How many times per week do you exercise for at least 30 minutes?</p>
-      <input class="input-box" id="exercise" type="number" name="q3" placeholder="Your answer...">
+      <input id="exercise" type="number" name="q3" placeholder="Your answer...">
     </div>
-    <div class="btn-container">
-      <button class="submit-btn" onclick="prevCard('card2')">Previous</button>
-      <button class="submit-btn mt-7" onclick="nextCard('card4')">Next</button>
-    </div>
+    <div class="btn-container"><button class="submit-btn" onclick="prevCard('card2')">Previous</button>
+      <button style=" margin-top: 108px;" class="submit-btn" onclick="nextCard('card4')">Next</button></div>
+    
   </div>
-
   <div class="quiz-card" id="card4">
     <div class="quiz-card-header">
       <h2>Question 4</h2>
     </div>
     <div class="quiz-card-content">
       <p>Have you ever been diagnosed with any chronic medical conditions? If yes, please specify.</p>
-      <input class="input-box" id="fam" type="text" name="q4" placeholder="Your answer..."> 
+      <input id="fam" type="text" name="q4" placeholder="Your answer...">
+      
     </div>
-    <div class="btn-container"> 
-      <button class="submit-btn" onclick="prevCard('card3')">Previous</button>
-      <button class="submit-btn mt-7" onclick="nextCard('card5')">Next</button>
-    </div>
+    <div class="btn-container"> <button class="submit-btn" onclick="prevCard('card3')">Previous</button>
+      <button style=" margin-top: 60px;" class="submit-btn" onclick="nextCard('card5')">Next</button></div>
+   
   </div>
-
   <div class="quiz-card" id="card5">
     <div class="quiz-card-header">
       <h2>Question 5</h2>
     </div>
     <div class="quiz-card-content">
       <p>Do you have any other health conditions?</p>
-      <input class="input-box" id="other" type="text" id="question5" name="question5">
+      <input id="other" type="text" id="question5" name="question5">
     </div>
-    <div class="btn-container">
-      <button class="submit-btn" onclick="prevCard('card4')">Previous</button>
-      <button class="submit-btn mt-7" onclick="nextCard('card6')">Next</button>
-    </div>
+    <div class="btn-container"><button class="submit-btn" onclick="prevCard('card4')">Previous</button>
+      <button style=" margin-top: 105px;" class="submit-btn" onclick="nextCard('card6')">Next</button></div>
+    
   </div>
   
   <div class="quiz-card" id="card6">
@@ -156,86 +132,85 @@
     </div>
     <div class="quiz-card-content">
       <p>How many hours do you sleep in a day?</p>
-      <input class="input-box" id="sleep" type="number" name="q6" placeholder="Your answer...">
+      <input id="sleep" type="number" name="q6" placeholder="Your answer...">
+      
     </div>
-    <div class="btn-container">
-      <button class="submit-btn" onclick="prevCard('card5')">Previous</button>
-      <button class="submit-btn mt-7" onclick="nextCard('card7')">Next</button>
-    </div>
-  </div>
+    <div class="btn-container"><button class="submit-btn" onclick="prevCard('card5')">Previous</button>
+      <button style=" margin-top: 130px;"class="submit-btn" onclick="nextCard('card7')">Next</button></div>
+    
 
+  </div>
   <div class="quiz-card" id="card7">
     <div class="quiz-card-header">
       <h2>Question 7</h2>
     </div>
     <div class="quiz-card-content">
       <p>How often do you consume sugary beverages (soda, energy drinks, sweetened juices) in a week?</p>
-      <input class="input-box" id="sugar" type="number" name="q7" placeholder="Your answer...">
+      <input id="sugar" type="number" name="q7" placeholder="Your answer...">
+      
     </div>
-    <div class="btn-container">
-      <button class="submit-btn" onclick="prevCard('card6')">Previous</button>
-      <button class="submit-btn mt-7" onclick="nextCard('card8')">Next</button>
-    </div>
+    <div class="btn-container"><button class="submit-btn" onclick="prevCard('card6')">Previous</button>
+      <button class="submit-btn mt-7" onclick="nextCard('card8')">Next</button></div>
   </div>
-
   <div class="quiz-card" id="card8">
     <div class="quiz-card-header">
       <h2>Question 8</h2>
     </div>
     <div class="quiz-card-content">
       <p>On average, how many hours do you spend on electronic devices (e.g., computer, phone, TV) per day?</p>
-      <input class="input-box" id="screen" type="number" name="q8" placeholder="Your answer...">
+      <input id="screen" type="number" name="q8" placeholder="Your answer...">
+      
     </div>
-    <div class="btn-container">
-      <button class="submit-btn" onclick="prevCard('card7')">Previous</button>
-      <button class="submit-btn mt-7" onclick="nextCard('card9')">Next</button>
-    </div>
-  </div>
+    <div class="btn-container"><button class="submit-btn" onclick="prevCard('card7')">Previous</button>
+      <button class="submit-btn mt-7" onclick="nextCard('card9')">Next</button></div>
+    
 
+  </div>
   <div class="quiz-card" id="card9">
     <div class="quiz-card-header">
       <h2>Question 9</h2>
     </div>
     <div class="quiz-card-content">
       <p>How would you describe your stress level on a daily basis?</p>
-      <input class="input-box" id="stress" type="text" name="q9" placeholder="Your answer...">     
+      <input id="stress" type="text" name="q9" placeholder="Your answer...">
+      
     </div>
-    <div class="btn-container">
-      <button class="submit-btn" onclick="prevCard('card8')">Previous</button>
-      <button class="submit-btn mt-7" onclick="nextCard('card10')">Next</button>
-    </div>
-  </div>
+    <div class="btn-container"><button class="submit-btn" onclick="prevCard('card8')">Previous</button>
+      <button class="submit-btn mt-7" onclick="nextCard('card10')">Next</button></div>
+    
 
+  </div>
   <div class="quiz-card" id="card10">
     <div class="quiz-card-header">
       <h2>Question 10</h2>
     </div>
     <div class="quiz-card-content">
       <p>How often do you engage in activities that promote mental well-being, such as meditation, mindfulness, or relaxation exercises?</p>
-      <input class="input-box" id="medi" type="text" name="q10" placeholder="Your answer...">  
+      <input id="medi" type="text" name="q10" placeholder="Your answer...">
+      
     </div>
-    <div class="btn-container">
-      <button class="submit-btn" onclick="prevCard('card9')">Previous</button>
-      <button class="submit-btn mt7" onclick="nextCard('card11')">Next</button>
-    </div>
-  </div>
+    <div class="btn-container"><button class="submit-btn" onclick="prevCard('card9')">Previous</button>
+      <button class="submit-btn mt7" onclick="nextCard('card11')">Next</button></div>
+    
 
+  </div>
   <div class="quiz-card" id="card11">
     <div class="quiz-card-header">
       <h2>Question 11</h2>
     </div>
     <div class="quiz-card-content">
       <p>Have you been sick in last 20 days?</p>
-      <input class="input-box" id="sick" type="text" name="q11" placeholder="Your answer...">      
+      <input id="sick" type="text" name="q11" placeholder="Your answer...">
+      
     </div>
-    <div class="btn-container">
-      <button class="submit-btn" onclick="prevCard('card10')">Previous</button>
-      <button class="submit-btn mt-7" onclick="btnSubmit()">Submit</button>
-    </div>
+    <div class="btn-container"><button class="submit-btn" onclick="prevCard('card10')">Previous</button>
+      <button class="submit-btn mt-7" onclick="btnSubmit()">Submit</button></div>
+    
+  
   </div>
-  <div id="responseContainer" class="bg-white border border-gray-100">
-    <div id="loader" style="display:none;" class="loader"></div>
-  </div>
+</div>
+<div id="loader" class="hidden m-auto h-auto w-[50vw] bg-red-300" >
+
 </div>
 <script>
  
@@ -243,12 +218,14 @@
       document.querySelectorAll('.quiz-card').forEach(card => {
         card.classList.remove('active');
       });
+  
       document.getElementById(cardId).classList.add('active');
     }
   
     function nextCard(currentCardId) {
       var currentCardNumber = parseInt(currentCardId.replace('card', ''));
-      var nextCardNumber = currentCardNumber ;  
+      var nextCardNumber = currentCardNumber ;
+  
       var nextCardId = 'card' + nextCardNumber;
       if (document.getElementById(nextCardId)) {
         showCard(nextCardId);
@@ -259,7 +236,8 @@
   
     function prevCard(currentCardId) {
       var currentCardNumber = parseInt(currentCardId.replace('card', ''));
-      var prevCardNumber = currentCardNumber ;  
+      var prevCardNumber = currentCardNumber ;
+  
       var prevCardId = 'card' + prevCardNumber;
       if (document.getElementById(prevCardId)) {
         showCard(prevCardId);
@@ -267,30 +245,30 @@
     }
     function btnSubmit(){
     
-      const fvInput=document.getElementById("fvcount").value;
-      const fInput=document.getElementById("pcount").value;
-      const exerciseInput=document.getElementById("exercise").value;
-      const famInput=document.getElementById("fam").value;
-      const otherInput=document.getElementById("other").value;
-      const sleepInput=document.getElementById("sleep").value;
-      const sickInput=document.getElementById("sick").value;
-      const stressInput =document.getElementById("stress").value;
-      const screenInput=document.getElementById("screen").value;
-      const sugarInput=document.getElementById("sugar").value;
-      const mediInput=document.getElementById("medi").value;
-      const formData = {
-          medi: mediInput,
-          sugar: sugarInput,
-          screen: screenInput,
-          stress: stressInput,
-          fvcount: fvInput,
-          pcount: fInput,
-          exercise: exerciseInput,
-          fam: famInput,
-          other: otherInput,
-          sleep: sleepInput,
-          sick: sickInput,
-      };
+  const fvInput=document.getElementById("fvcount").value;
+  const fInput=document.getElementById("pcount").value;
+  const exerciseInput=document.getElementById("exercise").value;
+  const famInput=document.getElementById("fam").value;
+  const otherInput=document.getElementById("other").value;
+  const sleepInput=document.getElementById("sleep").value;
+  const sickInput=document.getElementById("sick").value;
+  const stressInput =document.getElementById("stress").value;
+  const screenInput=document.getElementById("screen").value;
+  const sugarInput=document.getElementById("sugar").value;
+  const mediInput=document.getElementById("medi").value;
+  const formData = {
+      medi: mediInput,
+      sugar: sugarInput,
+      screen: screenInput,
+      stress: stressInput,
+      fvcount: fvInput,
+      pcount: fInput,
+      exercise: exerciseInput,
+      fam: famInput,
+      other: otherInput,
+      sleep: sleepInput,
+      sick: sickInput,
+    };
 
     const formContainer = document.getElementById('card11');
     formContainer.style.display = 'none';
@@ -307,7 +285,8 @@
     .then(data => {
       loader.classList.add('hidden')
       const responseContainer = document.getElementById('responseContainer');
-      responseContainer.innerText = data;     
+      responseContainer.innerText = data;
+      
         console.log(data);
       })
       .catch(error => {
@@ -316,5 +295,4 @@
     }
   </script>
   <div id="responseContainer">
-
   </div>
