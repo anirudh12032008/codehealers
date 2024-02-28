@@ -25,8 +25,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-// Create .env file and in that write URL=xyz instead of xyz use the db url like the below one
-// 'mongodb+srv://ayeshanaaz396:Ayesha%40396@cluster0.lne4swa.mongodb.net/healer?retryWrites=true&w=majority'
 mongoose.connect(process.env.URL, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Error connecting to MongoDB:', err));    
@@ -63,12 +61,29 @@ const isLogin = (req, res, next) => {
   }
   next();
 };
-app.get("/", (req, res)=>{
+
+
+// app.get("/", (req, res)=>{
+//   res.render('index.ejs',{log: 0})
+// })
+// app.get('/', isLogin, async(req, res) => {
+//   res.render('buddy', {user: req.session.user, log: 1})
+// })
+
+
+// test
+app.get('/', async(req, res) => {
   res.render('index.ejs',{log: 0})
 })
-app.get('/', isLogin, async(req, res) => {
+
+
+app.get('/buddy', isLogin, async(req, res) => {
   res.render('buddy', {user: req.session.user, log: 1})
 })
+
+
+// test ends
+
 // register
 app.get('/register', async(req,res)=>{
     res.render('register.ejs', {log: 0})
@@ -98,7 +113,7 @@ app.post('/register', async (req, res) => {
       const user = new User(req.body);
       await user.save();
       req.session.user = user;
-      res.redirect('/profile');
+      res.redirect('/buddy');
     } catch (error) {
       console.error('Error creating user:', error);
       res.status(500).json({ message: 'Error creating user' });

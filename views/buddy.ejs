@@ -12,8 +12,9 @@
         }
 
         .OutputDivs1{
-            background:  rgba(33, 33, 33, 0.1);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             color: white;
             max-height: auto;
@@ -21,7 +22,8 @@
             height: auto;
             width: auto;
             margin: 10px;
-            border-radius: 10px;
+            padding: 20px;
+            border-radius: 5px;
         }
 
     </style>
@@ -41,20 +43,18 @@
         </form>
 
         <div id="outputs"
-            class="mx-10 bottom-10 flex flex-col md:flex-row justify-evenly items-center w-[95%] min-h-3/4 h-auto overflow-visible bg-slate-900">
+            class="m-4 bottom-10 flex flex-col md:flex-row justify-evenly items-center w-3/4 min-h-3/4 h-auto overflow-visible bg-[#344955]">
 
             <div id="responseDiv"
-                class="m-3 rounded-md w-full md:w-1/2 h-auto max-2xl bg-blue-500 flex justify-center items-center  bg-opacity-25 backdrop-filter backdrop-blur-lg border border-gray-300 shadow-lg p-4 max-w-lg">
+                class="m-3 rounded-md w-full md:w-1/2 h-auto max-2xl max-w-lg bg-[#211951] flex justify-center items-center bg-opacity-45 backdrop-filter backdrop-blur-lg border border-gray-300 shadow-lg p-4 ">
                 <h2 class="mb-2 text-center font-sans  text-white/80 font-semibold text-2xl">Analysis of your
                     Information</h2>
                 <!-- dynamic element thus added the css in style tag -->
-                <div class="OutputDivs1"></div>
-
             </div>
 
             <!-- This does not contain dynamic splitted data-->
             <div id="responseDiv2"
-                class="m-3 w-full md:w-1/2 h-auto text-white/80 bg-green-500 bg-opacity-25 backdrop-filter backdrop-blur-lg border border-green-300 rounded-lg shadow-lg p-4 max-w-sm">
+                class="m-4 w-full md:w-1/2 max-w-1/2 h-auto text-white bg-green-500 bg-opacity-25 backdrop-filter backdrop-blur-lg border border-green-300 rounded-lg shadow-lg p-4 ">
                 <h2 class="mb-2 text-center font-sans font-semibold text-2xl">Nearby Locations of hospitals </h2>
                 <div id="OutputDivs2"></div>
             </div>
@@ -156,14 +156,17 @@
 
 
                     main_data1.forEach(data => {
+                        
+                        const formattedData1 = data.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>").replace(/\n/g, "");
                         const div1 = document.createElement("div");
                         div1.classList.add("OutputDivs1");
-                        div1.innerText = data;
+                        div1.innerHTML = formattedData1;
                         outputContainer1.appendChild(div1);
                     });
 
+                    const formattedData2 = main_data2.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong><br>");
                     const outputContainer2 = document.getElementById("OutputDivs2");
-                    outputContainer2.innerText = main_data2;
+                    outputContainer2.innerText=formattedData2;
 
                     /** testing ends**/
 
