@@ -64,7 +64,7 @@ const isLogin = (req, res, next) => {
   next();
 };
 app.get("/", (req, res)=>{
-  res.render('index.ejs')
+  res.render('index.ejs',{log: 0})
 })
 app.get('/', isLogin, async(req, res) => {
   res.render('buddy', {user: req.session.user, log: 1})
