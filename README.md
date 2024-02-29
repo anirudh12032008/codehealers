@@ -56,14 +56,76 @@ HealthBuddy bridges these gaps by providing a unified platform where users can s
 3. **Personalized Reports:**
    - Answer a set of questions to generate a personalized health report.
 
-## Contribution Guidelines
+4. **Demo:**
+   - Watch a demo of HealthBuddy in action on [YouTube]().
 
-Feel free to contribute to HealthBuddy! Follow these steps to contribute:
 
-1. Fork the repository.
-2. Create a new branch.
-3. Make your changes and commit them.
-4. Submit a pull request.
+## Open Source Contributions Guide
+
+HealthBuddy welcomes and encourages contributions from the open-source community. Here's a guide on how you can contribute to the project:
+
+### Getting Started
+
+1. **Fork the Repository:**
+   - Click on the "Fork" button on the top right of the [HealthBuddy repository](https://github.com/anirudh12032008/codehealers/issues) to create your fork.
+
+2. **Clone Your Fork:**
+   - Clone the forked repository to your local machine using the following command:
+     ```bash
+     git clone https://github.com/anirudh12032008/HealthBuddy.git
+     ```
+
+3. **Create a Branch:**
+   - Create a new branch for your contribution:
+     ```bash
+     git checkout -b feature/your-feature-name
+     ```
+
+### Making Changes
+
+1. **Code Away:**
+   - Implement your changes or add new features.
+
+2. **Commit Changes:**
+   - Commit your changes with clear and concise messages:
+     ```bash
+     git commit -m "Add your meaningful commit message here"
+     ```
+
+3. **Push Changes:**
+   - Push your changes to your fork on GitHub:
+     ```bash
+     git push origin feature/your-feature-name
+     ```
+
+### Submitting a Pull Request
+
+1. **Create a Pull Request:**
+   - Navigate to the [HealthBuddy repository](https://github.com/anirudh12032008/codehealers/) on GitHub.
+   - Click on the "New Pull Request" button.
+   - Select the branch you just pushed and set up the pull request.
+
+2. **Describe Your Changes:**
+   - Provide a clear and detailed description of your changes in the pull request.
+
+3. **Review Process:**
+   - The maintainers will review your contribution and may provide feedback or request modifications.
+
+4. **Merge:**
+   - Once approved, your pull request will be merged into the main branch.
+
+### Code Standards
+
+- Follow the existing code style and guidelines used in the project.
+
+### Issues
+
+- Check the [project issues](https://github.com/anirudh12032008/codehealers/issues) for tasks that need attention.
+- If you plan to work on an existing issue, comment on it to let others know.
+
+### Thank You!
+
+Thank you for considering contributing to HealthBuddy! Your efforts help make this project better for everyone. If you have any questions or need assistance, feel free to reach out to the project maintainers.
 
 ## License
 
