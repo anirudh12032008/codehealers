@@ -308,13 +308,12 @@
       loader.classList.add('hidden')
       const responseContainer = document.getElementById('responseContainer');
       responseContainer.innerText = data;     
-        console.log(data);
       })
       .catch(error => {
         console.error('Error:', error);
       });
     }
   </script>
-  <div id="responseContainer">
+  <div id="responseContainer" class="bg-[#c8eee5] text-black">
 
   </div>

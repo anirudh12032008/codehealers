@@ -64,7 +64,12 @@ const isLogin = (req, res, next) => {
 
 // test
 app.get('/', async(req, res) => {
-  res.render('index.ejs',{log: 0})
+  if (!req?.session?.user){
+    res.render('index.ejs',{log: 0})
+  }
+  else{
+    res.render('buddy', {user: req.session.user, log: 1})
+  }
 })
 
 
@@ -99,7 +104,6 @@ app.get('/report',isLogin, async(req, res) => {
 // POST Routes
 // register
 app.post('/register', async (req, res) => {
-    console.log(req.body);
     try {
       const user = new User(req.body);
       await user.save();
@@ -145,11 +149,9 @@ app.post('/logout', (req, res) => {
 // buddy
 app.post('/buddy', async (req, res) => {
     const { prompt, lat, long } = req.body;
-    console.log(lat,long,'lat long');
     const geoApiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${long}&format=json`;
     const geoResponse = await axios.get(geoApiUrl);
     const city = geoResponse.data.address.city;
-    console.log(`City: ${city}`);
 
     const model = genAI.getGenerativeModel({ model: "gemini-pro"});
     const result = await model.generateContent( `Hi 
@@ -162,7 +164,6 @@ app.post('/buddy', async (req, res) => {
     note that dont include other things like ratings be specific with the details also to dont add anything else just the hospital details no general text `);
     const response = await result.response;
     const text = response.text();
-    console.log(text);
     const completion = await openai.chat.completions.create({
       messages: [{ role: "system", content: prompt }],
       model: "gpt-3.5-turbo",
@@ -172,7 +173,6 @@ app.post('/buddy', async (req, res) => {
 });
 
 app.post('/report', async(req, res) =>{
-  console.log('processing req');
   const {
     medi,
     stress,
@@ -187,13 +187,18 @@ app.post('/report', async(req, res) =>{
     sick,
   } = req.body;
   user = req.session.user
-  const prompt = `Here is a scenario. A person of height:${user.height} and weight:${user.weight},who takes number of servings of fruits and vegetables:${fvcount}, number of servings of processed foods:${pcount}, does exercise:${exercise} times per week for atleast 30 minutes, having chronical medical condition as ${fam} and other health conditions like ${other} , sleeps for ${sleep} hours,has been sick since last 20 days as ${sick}, consumes sugar beverages ${sugar} times a week, spends ${screen} hours on screen per day,has stress level of ${stress} on daily basis, engage in meditation ${medi}.Generate a personalized health report focused on improving well-being, maintaining overall health, and providing a general health score. Emphasize healthy habits and positive reinforcement while avoiding any mention of specific medical conditions or identifying information.`
-  const model = genAI.getGenerativeModel({ model: "gemini-pro"});
-  const result = await model.generateContent(prompt);
-  const response = await result.response;
-  const text = response.text();
-  console.log(text);
-  res.send(text)
+  try{
+
+    const prompt = `Here is a scenario. A person of height:${user.height} and weight:${user.weight},who takes number of servings of fruits and vegetables:${fvcount}, number of servings of processed foods:${pcount}, does exercise:${exercise} times per week for atleast 30 minutes, having chronical medical condition as ${fam} and other health conditions like ${other} , sleeps for ${sleep} hours,has been sick since last 20 days as ${sick}, consumes sugar beverages ${sugar} times a week, spends ${screen} hours on screen per day,has stress level of ${stress} on daily basis, engage in meditation ${medi}.Generate a personalized health report focused on improving well-being, maintaining overall health, and providing a general health score. Emphasize healthy habits and positive reinforcement while avoiding any mention of specific medical conditions or identifying information.`
+    const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+    res.send(text)
+  }
+  catch{
+    res.send('some error')
+  }
 })
 
 

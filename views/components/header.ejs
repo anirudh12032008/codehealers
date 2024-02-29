@@ -13,14 +13,23 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <nav class="bg-[#FFFFFF]">
+    <nav class="bg-[#d3f3ec]">
         <div class="px-4 py-3 flex items-center justify-between w-full shadow-md">
             <div class="w-10 h-10 ml-4">
                 <a href="/"><img src="images/icon.png" alt="logo"></a>
             </div>
             <% if (log) { %>
                 <!-- logged in user only -->
-                <div class="">
+                <div class=" flex pl-5 flex-row justify-between w-full">
+                    <div class="flex flex-row gap-4">
+
+                        <div class="flex items-center my-1 hover:bg-gray-100 ">
+                            <i class="ri-survey-line mx-1"></i></i><a href="/report" class="px-2 py-2 text-sm text-gray-700 hover:text-[#0d9276]">Check report</a>
+                        </div>
+                        <div class="flex items-center my-1 hover:bg-gray-100 ">
+                            <i class="ri-health-book-line mx-1"></i></i><a href="/buddy" class="px-2 py-2 text-sm text-gray-700 hover:text-[#0d9276]">Your Buddy</a>
+                        </div>
+                    </div>
                     <div class="flex items-center flex-end relative cursor-pointer overflow-hidden" onclick="menuToggle();">
                         <a id=1  type="button" name="button">
                           <img src="images/user.png" alt="user-icon" class="w-10 h-10 mr-8">
@@ -30,9 +39,7 @@
                         <div class="flex items-center my-1 hover:bg-gray-100 transition duration-150">
                             <i class="ri-user-3-line mx-2"></i><a href="/profile" class="px-4 py-2 text-sm text-gray-700 hover:text-[#0d9276]" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
                         </div>
-                        <div class="flex items-center my-1 hover:bg-gray-100 transition duration-150">
-                            <i class="ri-survey-line mx-2"></i></i><a href="/report" class="px-4 py-2 text-sm text-gray-700 hover:text-[#0d9276]" role="menuitem" tabindex="-1" id="user-menu-item-1">Check report</a>
-                        </div>
+                        
                         <div class="flex items-center my-1 hover:bg-gray-100 transition duration-150">
                             <i class="ri-logout-box-line mx-2"></i>
                             <form action="/logout" method="POST" style="display: inline;">
@@ -50,11 +57,11 @@
             <button class="menu-button md:hidden block" aria-label="Open Menu">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
-            <div class="dropdown-menu hidden flex-col space-y-4 mt-4 md:mt-0 md:flex md:flex-row md:space-y-0 md:space-x-4 md:relative">
+            <!-- <div class="dropdown-menu hidden flex-col space-y-4 mt-4 md:mt-0 md:flex md:flex-row md:space-y-0 md:space-x-4 md:relative">
                 <a href="/about" class="text-[#0D9276] opacity-75 hover:border-b-2 hover:border-[#0D9276] hover:opacity-100 px-3 py-2 text-sm font-medium">About</a>
                 <a href="/services" class="text-[#0D9276] opacity-75 hover:border-b-2 hover:border-[#0D9276] hover:opacity-100 px-3 py-2 text-sm font-medium">Services</a>
                 <a href="/contact" class="text-[#0D9276] opacity-75 hover:border-b-2 hover:border-[#0D9276] hover:opacity-100 px-3 py-2 text-sm font-medium">Contact Us</a>
-            </div>
+            </div> -->
             <div class="flex space-x-4 mr-4">
                 <a href="/login" class="bg-[#f2f2f2] text-[#0D9276] hover:bg-[#0D9276] hover:text-[#f2f2f2] rounded-lg px-3 py-2 text-sm font-medium">Login</a>
                 <a href="/register" class="bg-[#0D9276] text-white hover:bg-[#f2f2f2] hover:text-[#0D9276] hover:border-[#0D9276] hover:border-2 rounded-lg px-3 py-2 text-sm font-medium">Sign Up</a>

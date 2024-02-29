@@ -26,36 +26,36 @@
 
     </style>
 
-    <div id="hero" class="relative flex flex-col items-center justify-center w-full min-h-screen bg-slate-400">
-
+    <div id="hero" class="relative flex flex-col items-center justify-around w-full min-h-screen bg-[#E8FDF8]">
+        <div class="text-black text-center text-6xl font-semibold ">
+            Your Health Buddy
+        </div>
         <form
             class="flex flex-col sm:flex-row justify-center font-sans text-xl p-4 w-3/4  h-auto bg-white border-2 border-green-800"
             id="myForm">
             <label class="text-3xl mx-2" for="prompt">Prompt:</label>
             <input
                 class="px-3 py-1 w-full h-12 sm:w-1/2  rounded-md border-2 border-gray-400 focus:border-5 focus:border-blue-500"
-                type="text" id="prompt" name="prompt" placeholder="Enter your problem you want to search" required>
+                type="text" id="prompt" name="prompt" placeholder="Enter your symptoms" required>
             <button
                 class="p-2 h-12 sm:h-1/4 w-full sm:w-1/4 rounded-md bg-green-600 text-white text-3xl mt-4 sm:mt-0 sm:ml-4"
                 type="button" onclick="handleButtonClick()">Click me</button>
         </form>
 
         <div id="outputs"
-            class="mx-10 bottom-10 flex flex-col md:flex-row justify-evenly items-center w-[95%] min-h-3/4 h-auto overflow-visible bg-slate-900">
+            class="mx-10 bottom-10 flex flex-col md:flex-col justify-evenly items-center w-[95%] min-h-3/4 h-auto overflow-visible bg-[#E8FDF8]">
 
             <div id="responseDiv"
-                class="m-3 rounded-md w-full md:w-1/2 h-auto max-2xl bg-blue-500 flex justify-center items-center  bg-opacity-25 backdrop-filter backdrop-blur-lg border border-gray-300 shadow-lg p-4 max-w-lg">
-                <h2 class="mb-2 text-center font-sans  text-white/80 font-semibold text-2xl">Analysis of your
+                class="m-3  w-3/4  h-auto max-2xl bg-green-300 flex justify-center items-center  bg-opacity-25 backdrop-filter backdrop-blur-lg border border-green-400 rounded-lg shadow-lg p-4 ">
+                <h2 class="mb-2 text-center font-sans  text-black font-bold text-3xl">Analysis of your
                     Information</h2>
-                <!-- dynamic element thus added the css in style tag -->
                 <div class="OutputDivs1"></div>
 
             </div>
 
-            <!-- This does not contain dynamic splitted data-->
             <div id="responseDiv2"
-                class="m-3 w-full md:w-1/2 h-auto text-white/80 bg-green-500 bg-opacity-25 backdrop-filter backdrop-blur-lg border border-green-300 rounded-lg shadow-lg p-4 max-w-sm">
-                <h2 class="mb-2 text-center font-sans font-semibold text-2xl">Nearby Locations of hospitals </h2>
+                class="m-3 w-3/4  h-auto text-black  bg-green-300 bg-opacity-25 backdrop-filter backdrop-blur-lg border border-green-400 rounded-lg shadow-lg p-4 ">
+                <h2 class="mb-2 text-center font-sans font-bold text-3xl">Nearby Locations of hospitals </h2>
                 <div id="OutputDivs2"></div>
             </div>
 
@@ -63,6 +63,32 @@
 
     </div>
     <script>
+        function parseHealthInfo(text) {
+        // Split the text into sections
+        var sections = text.split(/\d\.\s+/).filter(Boolean);
+
+        var html = '<div class="max-w-2xl mx-auto text-center">';
+
+        sections.forEach(function (section) {
+            var lines = section.trim().split('\n');
+            var title = lines[0].trim().replace(/\*\*/g, '');
+
+            // Use h2 for all sections
+            html += '<h2 class="text-2xl text-black/90 font-bold mb-4">' + title + '</h2>';
+
+            if (lines.length > 1) {
+                html += '<ul class="texl-lg text-black/80 pl-8 mb-4">';
+                for (var i = 1; i < lines.length; i++) {
+                    var listItem = lines[i].trim().replace(/\*\*/g, '');
+                    html += '<li class="mb-2">' + listItem + '</li>';
+                }
+                html += '</ul>';
+            }
+        });
+
+        html += '</div>';
+        return html;
+    }
 
         async function handleButtonClick() {
             let latitude, longitude;
@@ -80,7 +106,6 @@
                     const position = await getPosition();
                     latitude = position.coords.latitude;
                     longitude = position.coords.longitude;
-                    console.log(latitude, longitude);
                     // Continue with the rest of your code using latitude and longitude
                 } else {
                     console.error('Geolocation not supported by the browser');
@@ -141,29 +166,22 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    // document.getElementById('responseDiv').innerText = data.op;
-                    // document.getElementById('responseDiv2').innerText = data.ge;
-
                     main_data1 = data.op.split("::::")
                     main_data2 = data.ge;
 
-                    console.log("first data ->" + main_data1);
-                    console.log("location data -> " + main_data2);
 
-
-                    /** testing here **/
                     const outputContainer1 = document.getElementById("responseDiv");
 
 
                     main_data1.forEach(data => {
                         const div1 = document.createElement("div");
                         div1.classList.add("OutputDivs1");
-                        div1.innerText = data;
+                        div1.innerHTML = parseHealthInfo(data);
                         outputContainer1.appendChild(div1);
                     });
 
                     const outputContainer2 = document.getElementById("OutputDivs2");
-                    outputContainer2.innerText = main_data2;
+                    outputContainer2.innerHTML = parseHealthInfo(main_data2);
 
                     /** testing ends**/
 
