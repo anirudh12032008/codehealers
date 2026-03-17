@@ -6,15 +6,12 @@ const path = require('path')
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const OpenAI = require('openai');
-const openai = new OpenAI();
-const openaiApiKey = process.env.OPENAI_API_KEY;
-openai.apiKey = openaiApiKey;
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 // gemini
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-pro"});
 const axios = require('axios');
 
 
@@ -25,12 +22,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-mongoose.connect(process.env.URL, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.URL)
 .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('Error connecting to MongoDB:', err));    
+  .catch(err => console.error('Error connecting to MongoDB:', err));
 
-app.use(bodyParser.json());
-app.use(session({ secret: 'ani', resave: false, saveUninitialized: true }));
+if (!process.env.SESSION_SECRET) {
+  console.warn('WARNING: SESSION_SECRET environment variable is not set. Using insecure default secret. Set SESSION_SECRET in production!');
+}
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'codehealers-secret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    sameSite: 'lax'
+  }
+}));
 
 const userSchema = new mongoose.Schema({
     username: String,
@@ -148,13 +156,14 @@ app.post('/logout', (req, res) => {
   });
 // buddy
 app.post('/buddy', async (req, res) => {
+  try {
     const { prompt, lat, long } = req.body;
     const geoApiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${long}&format=json`;
-    const geoResponse = await axios.get(geoApiUrl);
-    const city = geoResponse.data.address.city;
+    const geoResponse = await axios.get(geoApiUrl, { headers: { 'User-Agent': 'CodeHealers/1.0' } });
+    const city = geoResponse.data?.address?.city || geoResponse.data?.address?.town || geoResponse.data?.address?.state || 'your area';
 
-    const model = genAI.getGenerativeModel({ model: "gemini-pro"});
-    const result = await model.generateContent( `Hi 
+    const geminiModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const result = await geminiModel.generateContent( `Hi 
     tell me 5 hospitals in ${city} with there full address and coordinates
     the response should be in this format
     name
@@ -170,6 +179,10 @@ app.post('/buddy', async (req, res) => {
     });
     res.send({op: completion.choices[0]['message']['content'],
     ge: text})
+  } catch (error) {
+    console.error('Error in /buddy:', error);
+    res.status(500).send({ error: 'An error occurred while processing your request.' });
+  }
 });
 
 app.post('/report', async(req, res) =>{
@@ -190,19 +203,25 @@ app.post('/report', async(req, res) =>{
   try{
 
     const prompt = `Here is a scenario. A person of height:${user.height} and weight:${user.weight},who takes number of servings of fruits and vegetables:${fvcount}, number of servings of processed foods:${pcount}, does exercise:${exercise} times per week for atleast 30 minutes, having chronical medical condition as ${fam} and other health conditions like ${other} , sleeps for ${sleep} hours,has been sick since last 20 days as ${sick}, consumes sugar beverages ${sugar} times a week, spends ${screen} hours on screen per day,has stress level of ${stress} on daily basis, engage in meditation ${medi}.Generate a personalized health report focused on improving well-being, maintaining overall health, and providing a general health score. Emphasize healthy habits and positive reinforcement while avoiding any mention of specific medical conditions or identifying information.`
-    const model = genAI.getGenerativeModel({ model: "gemini-pro"});
-    const result = await model.generateContent(prompt);
+    const geminiModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const result = await geminiModel.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
     res.send(text)
   }
-  catch{
-    res.send('some error')
+  catch(error){
+    console.error('Error in /report:', error);
+    res.status(500).send('An error occurred while generating the report.')
   }
 })
 
 
-// server start
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+// Export app for Vercel serverless deployment
+module.exports = app;
+
+// Start server in local development
+if (require.main === module) {
+    app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+    });
+}
